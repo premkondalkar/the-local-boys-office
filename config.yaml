@@ -1,0 +1,56 @@
+# Office Automation Agents Configuration
+
+app:
+  name: "The Local Boys Office"
+  version: "1.0.0"
+  environment: "development"
+  debug: true
+
+api:
+  host: "0.0.0.0"
+  port: 5000
+  secret_key: "your-secret-key-here"
+
+agents:
+  image_generation:
+    enabled: true
+    model: "stable-diffusion"
+    api_key: "${OPENAI_API_KEY}"
+    max_retries: 3
+    timeout: 60
+  
+  image_analysis:
+    enabled: true
+    vision_model: "gpt-4-vision"
+    api_key: "${OPENAI_API_KEY}"
+    max_keywords: 10
+  
+  meesho_integration:
+    enabled: true
+    api_key: "${MEESHO_API_KEY}"
+    base_url: "https://api.meesho.com"
+  
+  ecommerce_integration:
+    enabled: true
+    platforms:
+      - name: "meesho"
+        enabled: true
+      - name: "flipkart"
+        enabled: false
+      - name: "amazon"
+        enabled: false
+
+storage:
+  type: "local"
+  upload_folder: "./uploads"
+  processed_folder: "./processed_images"
+  max_file_size: 50  # MB
+
+queue:
+  broker: "redis://localhost:6379/0"
+  backend: "redis://localhost:6379/1"
+  
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/app.log"
